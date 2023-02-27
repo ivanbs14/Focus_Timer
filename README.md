@@ -15,9 +15,12 @@ Layout UI/UX RocketSeat.
 🔖 Pagina
 </p>
 
-Você pode visualizar e interagir com a pagina do projeto através 
 <p align="center">
-<a href="https://ivanbs14.github.io/Fortune_Cookie/">Click aqui </a>
+Você pode visualizar e interagir com a pagina do projeto através 
+</p>
+
+<p align="center">
+<a href="https://ivanbs14.github.io/Focus_Timer/">Click aqui </a>
 </p>
 
 <p align="center">
