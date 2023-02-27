@@ -1,0 +1,194 @@
+---------------------->>>>>>>>>>>>     Criando cronometro     <<<<<<<<<<---------------------
+    1- criamos os arquivos padroes:
+        html, css, js e assets.
+    2- No html criamos a estrutura das tags e elementos
+    3- na pasta assets importamos os button em svg
+        mas importamos no html o codigo svg (nao o arquivo do assets)
+    4- no css:
+        - resetamos as configuraçoes da pagina
+        - configuramos cores rgb e hsl com variaveis
+        - retiramos algumas confuguraçoes de estilo dos button
+        - criamos uma classe hide no css. Para ocultar alguns elementos
+        - Na class timer, acrescentamos font-size e display flex (para retirar espaçamento entre os numeros)
+    5- mudamos as cores da fonte dos button para conhecimento.
+    6- CSS class #crontrols
+        - cor de fundo
+        - alinhamento dos elementos em linha (display flex)
+        - alinhamento dos itens em linha (align-items: center)
+        - Alinhe os itens flexíveis no centro do contêiner: (justify-content: center;)
+        
+    7- adicionamos o gap no controls
+    8- adicionamos a propriedade clamp para responsividades dos button, controls e font-size do timer.
+
+    9- adicionamos disply grid no (body).
+    10- com o justify-self: center e align-self:  end. (alinha o main).
+    11- com o justify-self: end e align-self:  end. (alinha o footer).
+    12- margin bottom (timer)
+
+    13- aplicando DOM no button play e pause
+    14- Criando 1 variavel e adicionando uma propriedade de add class.
+        let play = document.querySelector('.play')              // sinalizo que a variavel play vai ler o document (html)com o querySelector (selecionar) a class play.
+        play.classList.add('hide')                             // sinalizo que ao selecionar a class play add classList hide (ocultando o button play)
+
+        document.querySelector('.pause')                      // sinalizo que vai ler o document (html)com o querySelector (selecionar) a class pause.
+        .classList.remove('hide')                            // sinalizo que ao selecionar a class play add classList hide (ocultando o button play) 
+                                                                remove a class hide do button pause. (assim ficando visivel)
+    15- recebemos os parametros acima adicioanamos 
+        a play.addEventList = uma fuction anonima. para execuçao.
+    16- criamos 1 variavel pause com os mesmos parametros. ao evento de click
+        modelo: 
+            let play = document.querySelector('.play')
+
+            play.addEventListener('click', function() {
+                play.classList.add('hide')
+
+                pause.classList.remove('hide')
+            })
+    17- ao click no play o evento de stop a esquerda tambem é para aparecer portanto adicionamos essas 
+        funcionalidades a mais nos eventos de click do play pause e stop.
+    18- Refatoramos os arquivos js para melhor legibilidade.
+    19- configuramos as funcionalidades de click no sound.
+
+    20- criamos uma parametro de quando click no set aparecer um promt perguntando quantos minuts da aplicaçao
+    21- criamos um btnSet.addEventListener e uma variavel minuts
+    22- agora precisamos receber este valor no display. como o minuts retorna um elemento html span.
+        para acessarmos o conteudo interno usamos a seguinte configuraçao:
+            minutsDisplay.textContet = minuts
+    
+    24- Vamos gerar um loop para contagem regressiva do secunds
+    25- setTimeout: é uma function que serve para recerber uma function e é passado um tempo para que a mesma function seja executada.
+        modelo: 
+            function countDown() {                                          //function de contagem de secunds
+                setTimeout(function() {                                     //setTimeout receber como parametro uma function e o tempo para execuçao dela.
+                    let secunds = Number(secundsDisplay.textContent)        //converte a variavel em numero
+
+                    if( secunds <= 0 ) {                                    //condicional para o segundo começar a partir do 59
+                        secunds = 60
+                    }
+
+                    secundsDisplay.textContent = String(secunds -1).padStart(2, "0")  //condicional para retirar 1 a cada loop 
+                                                                                      26-// o numero foi transformado em string para receber um parametro 
+                                                                                             (padStart) de acrescentar uma strin sempre que tiver menos 1 string
+                    countDown()                                             //condicional para repetir loop
+                }, 1000)                                                    // 1000 representa milesimos ou 1 segundo para a execuçao da fuction.
+            }
+    27- mais ajustes na function countDown:
+        function countDown() {
+            setTimeout(function() {
+                let seconds = Number(secondsDisplay.textContent)
+                let minutes = Number(minutsDisplay.textContent)         //conveterndo variavel em numero
+                
+                secondsDisplay.textContent = "00"                       //declaramos os secunds como zero apos reset da function
+                
+                if(minutes <= 0) {                                                // condicional para reiniciar button e para contagem
+                    btnPlay.classList.remove('hide')
+                    btnPause.classList.add('hide')
+                    btnSet.classList.remove('hide')
+                    btnStop.classList.add('hide')
+                
+                    return
+                }
+                
+                if( seconds <= 0 ) {
+                    seconds = 2
+
+                    minutsDisplay.textContent = String(minutes -1).padStart(2, "0")
+                }
+
+                secondsDisplay.textContent = String(seconds -1).padStart(2, "0")  //padStart => pega uma string e acrescenta uma string de acordo com o parametro informado (2).
+                
+                countDown()
+            }, 1000)
+        }
+
+    28- refatoramos alguns parametros para melhorar a declaraçao do codigo.
+        criando as seguintes function: 
+            resetControls
+            updateTimerDisplay e repassada para a function countDown.
+
+    29- button pause parar a contagem no numero onde parou. envolvendo o setTimeout em uma variavel timerTimeOut
+        setTimeout gera um numero ao parar
+        timerTimeOut realiza a a pausa armazenando esse numero
+        clearTimeout recebe esse um id, no caso do timerTimeOut o numero da pausa do setTimeout
+    30- button stop reset timer, criando uma function resetTimer
+        alteramos a variavel fora do escopo minuts e convertemos para Number, para armazenar na function resetTimer
+        adicionamos a function reset timer configurada no buttonstop
+
+    31- resoluçao number NULL
+        btnSet.addEventListener('click', function() {
+            let newMinuts = prompt('qual o time?')   //criei uma variavel
+            if(!minuts) {                            //condiçao se nao tiver minutos receba o minutos do updateTimerDisplay
+                resetTimer()
+                return
+            }
+
+            minuts = newMinuts
+            updateTimerDisplay(minuts, 0)           //recebendo os minuts do updateTimerDisplay
+        })
+
+    32- Refatorando as fuctions de tempo em uma funçao refactore Timer
+        arquivo.js (timer):
+            criamos uma export function Timer, quer receber outras tres function (updateTimerDisplay, resetTimer, countDown).
+            no momento retornamos a function countDown.
+            e para a export function Timer(passamos os valores das dependencias ou variaveis declaradas no index) => minutsDisplay, secondsDisplay, timerTimeOut, resetControls
+                modelo de como ficou o arquivos timer.js:
+                    export function Timer({ minutsDisplay, secondsDisplay, timerTimeOut, resetControls }) {
+
+                        function updateTimerDisplay(minuts, seconds) {
+                            minutsDisplay.textContent = String(minuts).padStart(2, "0")
+                            secondsDisplay.textContent = String(seconds).padStart(2, "0")
+                        }
+
+                        function resetTimer() {
+                            updateTimerDisplay(minuts, 0)
+                            clearTimeout(timerTimeOut)
+                        }
+
+                        function countDown() {
+                            timerTimeOut = setTimeout(function() {
+                                let seconds = Number(secondsDisplay.textContent)
+                                let minuts = Number(minutsDisplay.textContent)
+                                
+                                updateTimerDisplay(minuts, 0)
+                                
+                                if(minuts <= 0) {
+                                    resetControls()
+                                    return
+                                }
+                                
+                                if( seconds <= 0 ) {
+                                    seconds = 3
+                                    --minuts
+                                }
+
+                                updateTimerDisplay(minuts, String(seconds -1))
+                                
+                                countDown()
+                            }, 1000)
+                        }
+
+                        return {
+                            countDown
+                        }
+                    }
+
+            É preciso importa a export function Timer no arquivo index.
+            E passar os valores da dependencias em uma variavel nova.
+                modelo: const timer = Timer({ minutsDisplay, secondsDisplay, timerTimeOut, resetControls })
+            E chamalas nos addEventListener que as solicitam.
+                modelo: timer.countDown()
+
+    33- Após algumas funcionalidades feitas segue breve resumo:
+        refatoramos mais algumas funcionalidades que se encontram na pasta js.
+        seguindo o mesmo principio das anteriores acima.
+
+        Adicinamos os elementos em um arquivo js e importamos nos arquivos js que as utilizam.
+
+        Adicionamos os sons (que sao elementos que chamamos pelo js.).
+
+    34- FINALIZANDO APLICAÇAO.
+        Reconstructor os elementos do events.
+        E importamos no arquivo.js index.
+    
+    35- 
+    
